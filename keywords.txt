@@ -1,0 +1,30 @@
+# file generated using https://github.com/Harryman/Arduino-header-keyword-creator
+##################################
+# Class Name
+##################################
+SST25VF	KEYWORD1
+
+##################################
+# Methods/Functions 
+##################################
+transInit	KEYWORD2
+endTrans	KEYWORD2
+writeEnable	KEYWORD2
+writeDisable	KEYWORD2
+enableBusy	KEYWORD2
+disableBusy	KEYWORD2
+addr	KEYWORD2
+busyChk	KEYWORD2
+readInit	KEYWORD2
+read	KEYWORD2
+byteWrite	KEYWORD2
+AAI	KEYWORD2
+AAI	KEYWORD2
+endAAI	KEYWORD2
+setBP	KEYWORD2
+writeStatus	KEYWORD2
+readStatus	KEYWORD2
+sectorErase	KEYWORD2
+chipErase	KEYWORD2
+readJID	KEYWORD2
+test	KEYWORD2
