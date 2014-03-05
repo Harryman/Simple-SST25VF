@@ -69,7 +69,7 @@ void SST25VF::disableBusy(){
 	endTrans();
 }
 
-void SST25VF::addr(uint32_t addr){
+void SST25VF::addrSend(uint32_t addr){
 	SPI.transfer(addr>>16);
 	SPI.transfer(addr>>8);
 	SPI.transfer(addr);
@@ -87,18 +87,18 @@ bool SST25VF::busyChk(){ /// returns false if busy, true if ready
 void SST25VF::readInit(uint32_t addr){
 	transInit();
 	SPI.transfer(3);
-	addr(addr);
+	addrSend(addr);
 }
 
 uint8_t SST25VF::read(){ // must run readInit, use endTrans to end read
-	SPI.transfer(0);
+	return SPI.transfer(0);
 }
 
 void SST25VF::byteWrite(uint32_t addr, uint8_t data){
 	writeEnable();
 	digitalWrite(_csPin, LOW);
 	SPI.transfer(2);
-	addr(addr);
+	addrSend(addr);
 	SPI.transfer(data);
 	endTrans();
 }
@@ -122,19 +122,15 @@ void SST25VF::AAI(uint32_t addr, uint16_t data){
 	writeEnable();
 	digitalWrite(_csPin, LOW);
 	SPI.transfer(0xad);
-	addr(addr);
+	addrSend(addr);
 	SPI.transfer(data>>8);
 	SPI.transfer(data);
 	endTrans();
 }
 
 void SST25VF::endAAI(){
-	if(busyChk() == true){
-		writeDisable();
-		disableBusy();
-		return true;
-	}
-	return false;
+	writeDisable();
+	disableBusy();
 }
 
 void SST25VF::setBP(uint8_t level){//0-8 0,1/64,1/32,1/16,1/8,1/4,1/2,1
@@ -166,8 +162,8 @@ void SST25VF::sectorErase(uint32_t addr){
 	writeEnable();
 	digitalWrite(_csPin, LOW);
 	SPI.transfer(0x20);
-	addr &= 0xFFF800; //sets remaining bits low
-	addr(addr);
+	addr &= 0x3FF800; //sets remaining bits low
+	addrSend(addr);
 	endTrans();
 	delay(25);
 }
@@ -177,13 +173,13 @@ void SST25VF::blockErase(uint32_t addr, uint8_t size){ // 32k or 64k block
 	digitalWrite(_csPin, LOW);
 	if(size == 32){
 		SPI.transfer(0x52);
-		addr &= 0xFFC000; //sets remaining bits low
+		addr &= 0x3FC000; //sets remaining bits low
 	}
 	else{
 		SPI.transfer(0xd8);
-		addr &= 0xFF8000; //sets remaining bits low
+		addr &= 0x3F8000; //sets remaining bits low
 	}
-	addr(addr);
+	addrSend(addr);
 	endTrans();
 	delay(25);
 }

@@ -41,7 +41,7 @@ class SST25VF{
     void writeDisable();
     void enableBusy();
     void disableBusy();
-    void addr(uint32_t addr);
+    void addrSend(uint32_t addr);
     bool busyChk(); /// returns false if busy, true if ready
     void readInit(uint32_t addr);
     uint8_t read(); // must run readInit, use endTrans to end read
